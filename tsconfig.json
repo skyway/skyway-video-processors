@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "noImplicitAny": true,
+      "module": "commonjs",
+      "target": "es5",
+      "allowJs": true,
+      "esModuleInterop": true,
+      "declaration": true,
+      "declarationMap": true,
+      "emitDeclarationOnly": false,
+      "sourceMap": true,
+      "declarationDir": "./types"
+  },
+  "files": ["src/index.ts"]
+}
