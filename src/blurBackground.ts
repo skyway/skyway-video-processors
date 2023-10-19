@@ -91,9 +91,9 @@ export class BlurBackground {
 
     async createProcessedStream(
         options: {
-            stopTrackWhenDisabled?: boolean,
-            onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>,
-            constraints?: MediaTrackConstraints
+            stopTrackWhenDisabled?: boolean;
+            onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>;
+            constraints?: MediaTrackConstraints;
         } = {}
     ): Promise<ProcessedStream> {
         if (!this.isInitialized) {

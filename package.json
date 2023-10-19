@@ -1,6 +1,6 @@
 {
   "name": "skyway-video-processors",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The official virtual background library for SkyWay",
   "homepage": "https://skyway.ntt.com/",
   "repository": {
@@ -9,7 +9,8 @@
   },
   "license": "MIT",
   "author": "NTT Communications Corp.",
-  "main": "dist/index.js",
+  "main": "dist/index.umd.js",
+  "types": "types/index.d.ts",
   "files": [
     "dist",
     "types",
@@ -20,7 +21,7 @@
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "fmt": "prettier --write src/**/*.ts example/src/**/*.ts"
+    "fmt": "prettier --write src/**/*.ts example/src/**/*.ts ./*.js"
   },
   "devDependencies": {
     "@types/dom-mediacapture-transform": "^0.1.5",

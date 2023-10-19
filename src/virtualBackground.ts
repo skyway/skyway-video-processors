@@ -21,7 +21,6 @@ export class VirtualBackground {
         });
         this.selfieSegmentation.setOptions({ modelSelection: 1 });
         this.selfieSegmentation.onResults((results: Results) => {
-        
             this.selfieSegmentationOnResults(results);
         });
         if (typeof options.image === 'string') {
@@ -93,9 +92,9 @@ export class VirtualBackground {
 
     async createProcessedStream(
         options: {
-            stopTrackWhenDisabled?: boolean,
-            onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>,
-            constraints?: MediaTrackConstraints
+            stopTrackWhenDisabled?: boolean;
+            onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>;
+            constraints?: MediaTrackConstraints;
         } = {}
     ): Promise<ProcessedStream> {
         if (!this.isInitialized) {
