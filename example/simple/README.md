@@ -9,13 +9,13 @@
 
 ### 背景差し替え処理を適用する場合
 ```ts
-const backgroundTransformer = new VirtualBackground({ image: 'green.png' });
+const backgroundProcessor = new VirtualBackground({ image: 'green.png' });
 ```
 
 ### 背景ぼかし処理を適用する場合
 
 ```ts
-const backgroundTransformer = new BlurBackground({ blur: 50 });
+const backgroundProcessor = new BlurBackground({ blur: 50 });
 ```
 
 

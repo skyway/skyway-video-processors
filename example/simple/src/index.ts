@@ -5,20 +5,20 @@ import { BlurBackground, VirtualBackground } from 'skyway-video-processors';
     const enableButton = <HTMLButtonElement>document.getElementById('enable');
     const disableButton = <HTMLButtonElement>document.getElementById('disable');
     const disposeVideoButton = <HTMLButtonElement>document.getElementById('dispose-video');
-    const disposeProcesserButton = <HTMLButtonElement>document.getElementById('dispose-processor');
+    const disposeProcessorButton = <HTMLButtonElement>document.getElementById('dispose-processor');
 
     // 背景差し替え処理を適用する場合
-    const backgroundTransformer = new VirtualBackground({ image: 'images/green.png' });
+    const backgroundProcessor = new VirtualBackground({ image: 'images/green.png' });
     // 背景ぼかし処理を適用する場合
-    // const backgroundTransformer = new BlurBackground({ blur: 50 });
-    await backgroundTransformer.initialize();
+    // const backgroundProcessor = new BlurBackground({ blur: 50 });
+    await backgroundProcessor.initialize();
 
     const constraints = {
         height: {ideal: 480},
         width: {ideal: 640},
         deviceId: 'default',
     };
-    const result = await backgroundTransformer.createProcessedStream({
+    const result = await backgroundProcessor.createProcessedStream({
         stopTrackWhenDisabled: true,
         onUpdateTrack: async (track) => {
             const stream = new MediaStream([track]);
@@ -33,8 +33,8 @@ import { BlurBackground, VirtualBackground } from 'skyway-video-processors';
     disableButton.addEventListener('click', () => {
         result.setEnabled(false);
     });
-    disposeProcesserButton.addEventListener('click', async () => {
-        await backgroundTransformer.dispose();
+    disposeProcessorButton.addEventListener('click', async () => {
+        await backgroundProcessor.dispose();
     });
     disposeVideoButton.addEventListener('click', async () => {
         await result.dispose();
