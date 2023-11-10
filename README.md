@@ -97,6 +97,24 @@ videoElement.srcObject = stream;
 await videoElement.play();
 ```
 
+## JavaScript SDKとの連携方法
+
+バーチャル背景による加工を行った映像を SkyWay で送信する映像として利用することができます。
+
+`VirtualBackground` 、 もしくは `BlurBackground` の初期化を行い、そのインスタンスを JavaScript SDK に引数として渡します。
+
+```
+const backgroundProcessor = new BlurBackground();
+await backgroundProcessor.initialize();
+
+const video = await SkyWayStreamFactory.createCustomVideoStream(backgroundProcessor, {
+    stopTrackWhenDisabled: true,
+});
+
+const me = await room.join();
+await me.publish(video);
+```
+
 ## API
 
 以下の API を提供しています。
