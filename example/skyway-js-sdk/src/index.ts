@@ -7,12 +7,12 @@ import {
     SkyWayRoom,
     SkyWayStreamFactory,
     uuidV4,
-    LocalCustomVideoStream
+    LocalCustomVideoStream,
 } from '@skyway-sdk/room';
 import { BlurBackground, VirtualBackground } from 'skyway-video-processors';
 
-const appId = "<ここにアプリケーション ID を入力>";
-const secret = "<ここにシークレットキーを入力>";
+const appId = '<ここにアプリケーション ID を入力>';
+const secret = '<ここにシークレットキーを入力>';
 
 const token = new SkyWayAuthToken({
     jti: uuidV4(),

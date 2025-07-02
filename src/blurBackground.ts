@@ -64,14 +64,27 @@ export class BlurBackground {
 
     private getProcessedMediaStreamTrack(track: MediaStreamVideoTrack) {
         const { height, width } = track.getSettings();
+        if (typeof width !== 'number' || typeof height !== 'number') {
+            throw new Error('Failed to get video track settings: width or height is not a number');
+        }
         this.processCanvas = new OffscreenCanvas(width, height);
-        this.processCanvasCtx = this.processCanvas.getContext('2d');
+        const ctx = this.processCanvas.getContext('2d');
+        if (!ctx) {
+            throw new Error('Failed to get OffscreenCanvasRenderingContext2D');
+        }
+        this.processCanvasCtx = ctx;
         const rawCanvas = new OffscreenCanvas(width, height);
         const rawCanvasCtx = rawCanvas.getContext('2d');
+        if (!rawCanvasCtx) {
+            throw new Error('Failed to get 2D context for rawCanvas');
+        }
         const processor = new MediaStreamTrackProcessor({ track });
         const generator = new MediaStreamTrackGenerator({ kind: 'video' });
         const transformer = new TransformStream({
             transform: async (videoFrame, controller) => {
+                if (!videoFrame) {
+                    throw new Error('Video frame is not available');
+                }
                 rawCanvasCtx.drawImage(videoFrame, 0, 0, width, height);
                 await this.selfieSegmentation.send({ image: rawCanvas as unknown as HTMLCanvasElement });
                 const newVideoFrame = new VideoFrame(this.processCanvas, { timestamp: videoFrame.timestamp });
@@ -110,8 +123,10 @@ export class BlurBackground {
             stopTrackWhenDisabled: options?.stopTrackWhenDisabled ?? false,
             onUpdateTrack: async (track: MediaStreamVideoTrack) => {
                 this.transformerAbortController = new AbortController();
-                const generator = this.getProcessedMediaStreamTrack(track);
-                options.onUpdateTrack(generator);
+                if (options.onUpdateTrack) {
+                    const generator = this.getProcessedMediaStreamTrack(track);
+                    await options.onUpdateTrack(generator);
+                }
             },
             onStopTrack: async () => {
                 track.stop();

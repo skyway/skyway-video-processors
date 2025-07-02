@@ -14,8 +14,8 @@ import { BlurBackground, VirtualBackground } from 'skyway-video-processors';
     await backgroundProcessor.initialize();
 
     const constraints = {
-        height: {ideal: 480},
-        width: {ideal: 640},
+        height: { ideal: 480 },
+        width: { ideal: 640 },
         deviceId: 'default',
     };
     const result = await backgroundProcessor.createProcessedStream({
@@ -24,7 +24,7 @@ import { BlurBackground, VirtualBackground } from 'skyway-video-processors';
             const stream = new MediaStream([track]);
             videoElement.srcObject = stream;
         },
-        constraints
+        constraints,
     });
 
     enableButton.addEventListener('click', () => {
@@ -39,7 +39,7 @@ import { BlurBackground, VirtualBackground } from 'skyway-video-processors';
     disposeVideoButton.addEventListener('click', async () => {
         await result.dispose();
     });
-    
+
     const stream = new MediaStream([result.track]);
     videoElement.srcObject = stream;
     await videoElement.play();

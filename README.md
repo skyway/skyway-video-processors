@@ -103,7 +103,7 @@ await videoElement.play();
 
 `VirtualBackground` 、 もしくは `BlurBackground` の初期化を行い、そのインスタンスを JavaScript SDK に引数として渡します。
 
-```
+```ts
 const backgroundProcessor = new BlurBackground();
 await backgroundProcessor.initialize();
 
@@ -301,7 +301,7 @@ track: MediaStreamTrack | null;
 
 映像が有効/無効になっているかの状態を示します。
 
-```
+```ts
 isEnabled: boolean;
 ```
 

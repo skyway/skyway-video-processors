@@ -17,7 +17,7 @@ export class ProcessedStream {
     constructor(track: MediaStreamTrack, type: ProcessedStreamType, options?: Partial<ProcessedStreamOptions>) {
         this.track = track;
         this.type = type;
-        this.options = options;
+        this.options = options ?? {};
     }
 
     async setEnabled(enabled: boolean): Promise<void> {
@@ -29,7 +29,9 @@ export class ProcessedStream {
             if (this.isEnabled && !enabled) {
                 this.track.stop();
                 this.isEnabled = enabled;
-                await this.options.onStopTrack();
+                if (this.options.onStopTrack) {
+                    await this.options.onStopTrack();
+                }
 
                 return;
             } else if (!this.isEnabled && enabled) {
@@ -40,7 +42,9 @@ export class ProcessedStream {
                 const [track] = stream.getVideoTracks();
                 this.track = track;
                 this.isEnabled = enabled;
-                await this.options.onUpdateTrack(track);
+                if (this.options.onUpdateTrack) {
+                    await this.options.onUpdateTrack(track);
+                }
 
                 return;
             }
@@ -56,7 +60,9 @@ export class ProcessedStream {
     }
 
     async dispose(): Promise<void> {
-        this.track.stop();
+        if (this.track) {
+            this.track.stop();
+        }
         this.track = null;
     }
 }
