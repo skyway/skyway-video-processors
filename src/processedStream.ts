@@ -63,6 +63,9 @@ export class ProcessedStream {
         if (this.track) {
             this.track.stop();
         }
+        if (this.options.onStopTrack) {
+            await this.options.onStopTrack();
+        }
         this.track = null;
     }
 }

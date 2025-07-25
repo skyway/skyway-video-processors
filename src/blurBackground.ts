@@ -85,19 +85,28 @@ export class BlurBackground {
                 if (!videoFrame) {
                     throw new Error('Video frame is not available');
                 }
-                rawCanvasCtx.drawImage(videoFrame, 0, 0, width, height);
-                await this.selfieSegmentation.send({ image: rawCanvas as unknown as HTMLCanvasElement });
-                const newVideoFrame = new VideoFrame(this.processCanvas, { timestamp: videoFrame.timestamp });
-                videoFrame.close();
 
-                controller.enqueue(newVideoFrame);
+                let newVideoFrame: VideoFrame | null = null;
+                try {
+                    rawCanvasCtx.drawImage(videoFrame, 0, 0, width, height);
+                    await this.selfieSegmentation.send({ image: rawCanvas as unknown as HTMLCanvasElement });
+                    newVideoFrame = new VideoFrame(this.processCanvas, { timestamp: videoFrame.timestamp });
+                    controller.enqueue(newVideoFrame);
+                } catch (error) {
+                    newVideoFrame?.close();
+                    throw error;
+                } finally {
+                    videoFrame.close();
+                }
             },
         });
 
         processor.readable
             .pipeThrough(transformer, { signal: this.transformerAbortController.signal })
             .pipeTo(generator.writable)
-            .catch((e: Error) => console.error(e.message));
+            .catch((e: Error) => {
+                console.error('BlurBackground processing error:', e.message);
+            });
 
         return generator;
     }

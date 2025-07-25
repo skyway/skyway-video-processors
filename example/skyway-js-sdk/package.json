@@ -17,6 +17,6 @@
     "webpack-dev-server": "^4.15.0"
   },
   "dependencies": {
-    "@skyway-sdk/room": "^1.13.2"
+    "@skyway-sdk/room": "^1.14.0"
   }
 }
