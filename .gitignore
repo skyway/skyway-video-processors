@@ -131,6 +131,3 @@ dist
 
 # for example Dir
 build/
-
-# for types Dir
-types/

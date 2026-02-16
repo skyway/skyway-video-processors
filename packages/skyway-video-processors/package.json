@@ -1,0 +1,47 @@
+{
+  "name": "skyway-video-processors",
+  "version": "1.1.0",
+  "description": "The official virtual background library for SkyWay",
+  "homepage": "https://skyway.ntt.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skyway/skyway-video-processors.git"
+  },
+  "license": "MIT",
+  "author": "NTT DOCOMO BUSINESS, Inc.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:dev": "tsup --watch",
+    "build:prod": "tsup --minify"
+  },
+  "devDependencies": {
+    "@types/dom-mediacapture-transform": "^0.1.11",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@mediapipe/selfie_segmentation": "0.1.1675465747",
+    "stackblur-canvas": "^2.7.0"
+  },
+  "keywords": [
+    "webrtc",
+    "skyway",
+    "virtual-background",
+    "blur-background",
+    "video-processor"
+  ]
+}

@@ -1,45 +1,21 @@
 {
-  "name": "skyway-video-processors",
-  "version": "1.0.3",
-  "description": "The official virtual background library for SkyWay",
-  "homepage": "https://skyway.ntt.com/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/skyway/skyway-video-processors.git"
-  },
-  "license": "MIT",
-  "author": "NTT DOCOMO BUSINESS, Inc.",
-  "main": "dist/index.umd.js",
-  "types": "types/index.d.ts",
-  "files": [
-    "dist",
-    "types",
-    "LICENSE"
-  ],
+  "name": "skyway-video-processors-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Workspace root for skyway-video-processors monorepo",
   "scripts": {
-    "build": "webpack --mode=production --node-env=production",
-    "build:dev": "webpack --mode=development",
-    "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch",
-    "fmt": "prettier --write src/**/*.ts example/**/*.ts ./*.js"
+    "build": "pnpm --filter skyway-video-processors build",
+    "build:examples": "pnpm --filter './examples/*' build",
+    "lint": "biome check . --error-on-warnings",
+    "lint:fix": "biome check . --write --error-on-warnings",
+    "prepare": "husky"
   },
   "devDependencies": {
-    "@types/dom-mediacapture-transform": "^0.1.11",
-    "@webpack-cli/generators": "^3.0.7",
-    "prettier": "^2.8.8",
-    "ts-loader": "^9.5.2",
-    "typescript": "^5.8.3",
-    "webpack": "^5.99.9",
-    "webpack-cli": "^5.1.3"
+    "@biomejs/biome": "2.3.8",
+    "husky": "^9.1.7"
   },
-  "dependencies": {
-    "@mediapipe/selfie_segmentation": "^0.1.1675465747"
-  },
-  "keywords": [
-    "webrtc",
-    "skyway",
-    "virtual-background",
-    "blur-background",
-    "video-processor"
-  ]
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
 }

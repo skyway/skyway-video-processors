@@ -1,0 +1,23 @@
+{
+  "name": "skyway-video-processors-example-simple",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "serve": "webpack serve"
+  },
+  "author": "NTT DOCOMO BUSINESS, Inc.",
+  "dependencies": {
+    "skyway-video-processors": "latest"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^5.1.3",
+    "webpack-dev-server": "^5.2.2"
+  }
+}

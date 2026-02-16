@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>SkyWay Tutorial</title>
+</head>
+
+<body>
+    <p>ID: <span id="my-id"></span></p>
+    <div>
+        <label for="room-name">room name: </label>
+        <input id="room-name" type="text" />
+        <button id="join">join</button>
+        <button id="disable">disable</button>
+        <button id="enable">enable</button>
+        <button id="dispose-video">dispose video</button>
+        <button id="dispose-processor">dispose processor</button>
+    </div>
+    <video id="local-video" muted autoplay playsinline></video>
+    <div id="button-area"></div>
+    <div id="remote-media-area"></div>
+</body>
+<script defer="defer" src="./main.js"></script>
+
+</html>

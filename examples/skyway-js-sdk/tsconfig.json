@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "nodenext",
+    "target": "es5",
+    "lib": ["ES2015", "DOM"],
+    "allowJs": true,
+    "moduleResolution": "nodenext"
+  },
+  "files": ["src/index.ts"]
+}

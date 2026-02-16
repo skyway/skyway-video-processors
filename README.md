@@ -14,14 +14,29 @@ JavaScript/TypeScript を用いてブラウザ上でカメラから取得した�
 Enterprise プランをご契約のお客様はテクニカルサポートをご利用ください。
 詳しくは[SkyWay サポート](https://support.skyway.ntt.com/hc/ja)をご確認ください。
 
-## 対応ブラウザ
+## 動作確認済みブラウザ
 
 - Chrome
 - Edge
+- Safari (15.4+)
 
-`MediaStreamTrackProcessor` という Experimental のブラウザ API を使用しているため、使用する際は以下より対応ブラウザを参照してください。
+本ライブラリは、`MediaStreamTrackProcessor`/`MediaStreamTrackGenerator` または
+`requestVideoFrameCallback` のいずれかが利用できる環境で動作します。
+これらの API が利用できない環境では、`initialize()` が `Error` を throw します。
 
-https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackProcessor#browser_compatibility
+上記以外のブラウザでも、上記 API が利用できる場合は動作する可能性がありますが、
+動作保証は致しかねます。
+
+Chrome および Edge では `MediaStreamTrackProcessor` というブラウザ API を使用しています。
+Safari では `requestVideoFrameCallback` というブラウザ API を使用しています。
+
+それぞれのブラウザの対応状況については以下を参照してください。
+
+- [MediaStreamTrackProcessor](https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrackProcessor#browser_compatibility)
+- [requestVideoFrameCallback](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/requestVideoFrameCallback#browser_compatibility)
+
+> [!note]
+> macOSのSafari、もしくはiOSの各ブラウザでは、解像度の大きな映像に対して使用するとフレームレートが低下する可能性があります。該当の環境では、負荷軽減のため適切な解像度でのご利用をおすすめします。
 
 ## インストール
 
@@ -33,7 +48,7 @@ npm install skyway-video-processors
 
 ## 使い方
 
-以下の使い方の詳細は[Sample](./example/simple/src/index.ts)を参照してください。
+以下の使い方の詳細は[Sample](./examples/simple/src/index.ts)を参照してください。
 
 任意の画像を利用して背景差し替え処理を行う `VirtualBackground` と、任意の強度で背景ぼかし処理を適用する `BlurBackground` の 2 つのクラスが存在します。
 
@@ -42,8 +57,8 @@ npm install skyway-video-processors
 `VirtualBackground` のインスタンスを作成します。
 
 ```ts
-import { VirtualBackground } from 'skyway-video-processors';
-virtualBackground = new VirtualBackground({ image: 'green.png' });
+import { VirtualBackground } from "skyway-video-processors";
+virtualBackground = new VirtualBackground({ image: "green.png" });
 ```
 
 インスタンスの初期化を行います。
@@ -72,7 +87,7 @@ await videoElement.play();
 `BlurBackground` のインスタンスを作成します。
 
 ```ts
-import { BlurBackground } from 'skyway-video-processors';
+import { BlurBackground } from "skyway-video-processors";
 blurBackground = new BlurBackground();
 ```
 
@@ -107,9 +122,12 @@ await videoElement.play();
 const backgroundProcessor = new BlurBackground();
 await backgroundProcessor.initialize();
 
-const video = await SkyWayStreamFactory.createCustomVideoStream(backgroundProcessor, {
+const video = await SkyWayStreamFactory.createCustomVideoStream(
+  backgroundProcessor,
+  {
     stopTrackWhenDisabled: true,
-});
+  },
+);
 
 const me = await room.join();
 await me.publish(video);
@@ -162,32 +180,32 @@ createProcessedStream(options: {
 
 options を指定する場合、以下のプロパティを指定します。
 
--   `stopTrackWhenDisabled?: boolean`
-    -   `ProcessedStream.setEnabled(false)` の実行時に track を停止するかを示すオプション
--   `onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>`
-    -   `ProcessedStream.setEnabled(true)` の際にデバイスから再取得した `MediaStreamTrack` に行う操作
+- `stopTrackWhenDisabled?: boolean`
+  - `ProcessedStream.setEnabled(false)` の実行時に track を停止するかを示すオプション
+- `onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>`
+  - `ProcessedStream.setEnabled(true)` の際にデバイスから再取得した `MediaStreamTrack` に行う操作
 - `constraints: MediaTrackConstraints`
-    - 一例として、以下のような値を指定できます。
-        -   `height: number | ConstrainULongRange`
-        -   `width: number | ConstrainULongRange`
-        -   `deviceId: ConstrainDOMString`
-    - 詳細は https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints を参照してください。
+  - 一例として、以下のような値を指定できます。
+    - `height: number | ConstrainULongRange`
+    - `width: number | ConstrainULongRange`
+    - `deviceId: ConstrainDOMString`
+  - 詳細は https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints を参照してください。
 
 以下のようにして options を指定できます。
 
 ```ts
 const constraints = {
-    height: {ideal: 480},
-    width: {ideal: 640},
-    deviceId: 'default',
+  height: { ideal: 480 },
+  width: { ideal: 640 },
+  deviceId: "default",
 };
 const result = await virtualBackground.createProcessedStream({
-    stopTrackWhenDisabled: true,
-    onUpdateTrack: async (track) => {
-        const stream = new MediaStream([track]);
-        videoElement.srcObject = stream;
-    },
-    constraints
+  stopTrackWhenDisabled: true,
+  onUpdateTrack: async (track) => {
+    const stream = new MediaStream([track]);
+    videoElement.srcObject = stream;
+  },
+  constraints,
 });
 ```
 
@@ -225,7 +243,6 @@ new BlurBackground({blur: number}): BlurBackground
 blurBackground.initialize(): Promise<void>
 ```
 
-
 ##### `createProcessedStream`
 
 デバイスのカメラから取得した映像に対して、背景ぼかし処理が行われた映像の`ProcessedStream`を取得します。
@@ -244,32 +261,32 @@ createProcessedStream(options: {
 
 options を指定する場合、以下のプロパティを指定します。
 
--   `stopTrackWhenDisabled?: boolean`
-    -   `ProcessedStream.setEnabled(false)` の実行時に track を停止するかを示すオプション
--   `onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>`
-    -   `ProcessedStream.setEnabled(true)` の際にデバイスから再取得した `MediaStreamTrack` に行う操作
+- `stopTrackWhenDisabled?: boolean`
+  - `ProcessedStream.setEnabled(false)` の実行時に track を停止するかを示すオプション
+- `onUpdateTrack?: (track: MediaStreamTrack) => Promise<void>`
+  - `ProcessedStream.setEnabled(true)` の際にデバイスから再取得した `MediaStreamTrack` に行う操作
 - `constraints: MediaTrackConstraints`
-    - 一例として、以下のような値を指定できます。
-        -   `height: number | ConstrainULongRange`
-        -   `width: number | ConstrainULongRange`
-        -   `deviceId: ConstrainDOMString`
-    - 詳細は https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints を参照してください。
+  - 一例として、以下のような値を指定できます。
+    - `height: number | ConstrainULongRange`
+    - `width: number | ConstrainULongRange`
+    - `deviceId: ConstrainDOMString`
+  - 詳細は https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints を参照してください。
 
 以下のようにして options を指定できます。
 
 ```ts
 const constraints = {
-    height: {ideal: 480},
-    width: {ideal: 640},
-    deviceId: 'default',
+  height: { ideal: 480 },
+  width: { ideal: 640 },
+  deviceId: "default",
 };
 const result = await blurBackground.createProcessedStream({
-    stopTrackWhenDisabled: true,
-    onUpdateTrack: async (track) => {
-        const stream = new MediaStream([track]);
-        videoElement.srcObject = stream;
-    },
-    constraints
+  stopTrackWhenDisabled: true,
+  onUpdateTrack: async (track) => {
+    const stream = new MediaStream([track]);
+    videoElement.srcObject = stream;
+  },
+  constraints,
 });
 ```
 
